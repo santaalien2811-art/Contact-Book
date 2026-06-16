@@ -1,12 +1,4 @@
-contacts = []
-def show_menu():
-    print("\n*******************************Contacts Book*******************************")
-    print("1. Add Contact")
-    print("2. View Contact")
-    print("3. Search Contact")
-    print("4. Edit Contact")
-    print("5. Delete contact")
-    print("6. Exit")
+contacts = []    
 
 def add_contact():
  name = input("Enter name: ")
@@ -64,15 +56,44 @@ def edit_contact():
             new_name = input("Enter new name: ")
             new_number = input("Enter new number: ")
             new_email = input("Enter new email: ")
-            contacts[index]["name"] = new_name
-            contacts[index]["number"] = new_number
-            contacts[index]["email"] = new_email
+            if new_name:
+             contacts[index]["name"] = new_name
+            if new_number: 
+             contacts[index]["number"] = new_number
+            if new_email: 
+             contacts[index]["email"] = new_email
             print("Contact updated!")
         else:
          print("Contact does not exist!")
    except ValueError:
       print("Invalid number!")
-            
+
+def load_contact():
+   path = "D:/Contacts/Contacts.txt"
+   try:
+      with open(path, "r") as file:
+         for line in file:
+            name, number, email = line.strip().split(",")  
+
+            contacts.append({
+               "name":name,
+               "number":number,
+               "email":email
+            })      
+      print("\n====================Contacts have been loaded!====================")       
+                  
+   except FileNotFoundError:
+      print("File not found!") 
+
+def save_contact():
+   path = "D:/Contacts/Contacts.txt"
+
+   with open(path, "w") as file:
+      for contact in contacts:
+       file.write(
+         f"{contact['name']},{contact['number']},{contact['email']}\n"
+      )   
+   print("Contacts have been saved!")
 
 def delete_contact():
     view_contact()
@@ -87,6 +108,18 @@ def delete_contact():
             print("Contact does not exist!")
     except ValueError:
         print("Invalid number!")
+
+def show_menu():
+    print("\n*******************************Contacts Book*******************************")
+    print("1. Add Contact")
+    print("2. View Contact")
+    print("3. Search Contact")
+    print("4. Edit Contact")
+    print("5. Delete contact")
+    print("6. Exit")       
+    pass
+
+load_contact()
 
 while True:
     show_menu()
@@ -104,6 +137,7 @@ while True:
      elif choice == 5:
         delete_contact()
      elif choice == 6:
+        save_contact()
         print("Goodbye!")
         break
      else:
